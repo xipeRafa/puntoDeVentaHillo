@@ -18,7 +18,9 @@ export const AuctionBody = () => {
 
       {stateLogout ? (
         <div className="">
+        {localStorage.getItem('userEmailLS') !== null ? (
             <AuctionCard items={items} UpdateById={UpdateById} key={Date.now()} />
+            ) : (<p>Holis</p>) }
         </div>
       ) : (
         ''

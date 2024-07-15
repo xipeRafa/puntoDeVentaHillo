@@ -19,7 +19,7 @@ export const AuctionCard = ({ items, UpdateById }) => {
 
 
 
-  const { deleteById, setToggle, toggle } = useContext(FireStoreDataContext);
+  const { deleteById, setToggle, toggle, toggleOrders, setToggleOrders } = useContext(FireStoreDataContext);
 
 
 
@@ -27,16 +27,26 @@ export const AuctionCard = ({ items, UpdateById }) => {
 
         const obj = el
 
-        obj.takenByCustomer = false
+        obj.takenByCustomer = true
 
         UpdateById(id, obj)
 
         setToggle(!toggle)
   }
 
+  const handleToggleOrders =()=>{
+        setToggleOrders(!toggleOrders)
+        setToggle(!toggle)
+  }
+
+
+
      return (
         <div className='card p-2'>
-            <h3 className='text-white'>ORDENES DE HERMOSILLO</h3>
+         <h3 className='text-white'>ORDENES DE HERMOSILLO</h3>
+        <button className='btn btn-info m-2' onClick={handleToggleOrders}> {toggleOrders ? 'Entregados' : 'Por Entregar'} </button>
+       
+           
             {items.filter((el) => el.city === "hermosillo")
                 .map((el, i) => (
 
@@ -48,7 +58,7 @@ export const AuctionCard = ({ items, UpdateById }) => {
                             <h3>Comprador: {el.buyer.name}</h3>
 
                             {el.items.map((el, i) => (
-                                <b>Producto ID: {el.id} <br /><br /></b>
+                                <b key={i}>Producto ID: {el.id} <br /><br /></b>
                             ))}
 
                             <p>Correo: {el.buyer.email}</p>
@@ -66,11 +76,11 @@ export const AuctionCard = ({ items, UpdateById }) => {
                             </p>
 
                             <p>Total: {el.total}</p>
-                            <b>{el.takenByCustomer ? 'Entregado' : 'Pendiente'}</b>
+                            <b>Status: {el.takenByCustomer ? 'Entregado' : 'Pendiente'}</b>
 
                         </div>
 
-                        <button className='btn btn-primary mt-2'  onClick={()=>handleToggle(el.id, el)}> 
+                        <button className='btn btn-outline-primary mt-2'  onClick={()=>handleToggle(el.id, el)}> 
                             {el.takenByCustomer ? 'Entregado' : 'Marcar como entregada'}
                         </button>
 
@@ -82,3 +92,20 @@ export const AuctionCard = ({ items, UpdateById }) => {
         </div>
     );
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

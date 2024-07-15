@@ -26,9 +26,14 @@ export const FireStoreDataContext = createContext();
 const FireStoreDataProvider = (props) => {
   const [items, setItems] = useState([]);
 
+  const [toggleOrders, setToggleOrders]=useState(false)
+
+  console.log(toggleOrders)
+
   const itemCollection = query(
     collection(firestoreDB, 'orders'),
-    // where('takenByCustomer', '==', false)
+    where('takenByCustomer', '==', toggleOrders),
+    where("city", "==", "hermosillo")
   );
 
 
@@ -115,7 +120,7 @@ const FireStoreDataProvider = (props) => {
 
 
 
-  
+
 
   return (
     <FireStoreDataContext.Provider
@@ -127,6 +132,8 @@ const FireStoreDataProvider = (props) => {
         postCollection,
         setToggle,
         toggle,
+        toggleOrders,
+        setToggleOrders
       }}
     >
       {props.children}
