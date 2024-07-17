@@ -32,6 +32,21 @@ export const AuctionCard = ({ items, UpdateById }) => {
         UpdateById(id, obj)
 
         setToggle(!toggle)
+
+
+        //=====//================//
+
+        obj.items.map((el,i)=>{
+
+            if(el?.stockHermosillo===undefined){
+                obj.items[i].stockSanCarlos = el?.stockSanCarlos - el.quantity
+                UpdateById(id, obj)
+            }else{
+                obj.items[i].stockHermosillo = el?.stockHermosillo - el.quantity
+                UpdateById(id, obj)
+            }
+
+        })
   }
 
   const handleToggleOrders =()=>{
