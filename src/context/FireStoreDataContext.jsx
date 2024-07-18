@@ -118,7 +118,6 @@ const FireStoreDataProvider = (props) => {
   };
 
   const UpdateByIdInventario = async (id, obj) => {
-    console.log('kokokok')
     const aaDoc = doc(firestoreDB, 'inventario', id);
     try {
       await updateDoc(aaDoc, obj);
