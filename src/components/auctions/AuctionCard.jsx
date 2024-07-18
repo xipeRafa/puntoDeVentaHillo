@@ -9,7 +9,7 @@ import { FireStoreDataContext } from '../../context/FireStoreDataContext';
 
 
 
-export const AuctionCard = ({ items, UpdateById }) => {
+export const AuctionCard = ({ items, UpdateById, UpdateByIdInventario }) => {
 
   const formateador = new Intl.DateTimeFormat("es-MX", { dateStyle: 'long', timeStyle: 'short' });
    
@@ -25,6 +25,7 @@ export const AuctionCard = ({ items, UpdateById }) => {
 
   const handleToggle =(id, el)=>{
 
+
         const obj = el
 
         obj.takenByCustomer = true
@@ -39,11 +40,13 @@ export const AuctionCard = ({ items, UpdateById }) => {
         obj.items.map((el,i)=>{
 
             if(el?.stockHermosillo===undefined){
-                obj.items[i].stockSanCarlos = el?.stockSanCarlos - el.quantity
-                UpdateById(id, obj)
+                el.stockSanCarlos = el?.stockSanCarlos - el.quantity
+                UpdateByIdInventario(el.id, el)
+                console.log('sancarlos update')
             }else{
-                obj.items[i].stockHermosillo = el?.stockHermosillo - el.quantity
-                UpdateById(id, obj)
+                el.stockHermosillo = el?.stockHermosillo - el.quantity
+                UpdateByIdInventario(el.id, el)
+                console.log('hermosillo update ')
             }
 
         })

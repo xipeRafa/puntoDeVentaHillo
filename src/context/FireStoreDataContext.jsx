@@ -28,7 +28,6 @@ const FireStoreDataProvider = (props) => {
 
   const [toggleOrders, setToggleOrders]=useState(false)
 
-  console.log(toggleOrders)
 
   const itemCollection = query(
     collection(firestoreDB, 'orders'),
@@ -118,6 +117,16 @@ const FireStoreDataProvider = (props) => {
     }
   };
 
+  const UpdateByIdInventario = async (id, obj) => {
+    console.log('kokokok')
+    const aaDoc = doc(firestoreDB, 'inventario', id);
+    try {
+      await updateDoc(aaDoc, obj);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
 
 
 
@@ -133,7 +142,8 @@ const FireStoreDataProvider = (props) => {
         setToggle,
         toggle,
         toggleOrders,
-        setToggleOrders
+        setToggleOrders,
+        UpdateByIdInventario
       }}
     >
       {props.children}
