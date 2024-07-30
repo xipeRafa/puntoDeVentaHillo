@@ -21,7 +21,8 @@ export const AuctionCard = ({ items, UpdateById, UpdateByIdInventario }) => {
 
 
 
-    const { deleteById, setToggle, toggle, toggleOrders, setToggleOrders } = useContext(FireStoreDataContext);
+    const { deleteById, setToggle, toggle, toggleOrders, setToggleOrders, itemsInventario } = useContext(FireStoreDataContext);
+
 
     const[noteState, setNoteState]=useState('')
 
@@ -34,6 +35,7 @@ export const AuctionCard = ({ items, UpdateById, UpdateByIdInventario }) => {
     )
 
 
+
     const handleToggle =(id, el)=>{
 
         if(noteState.length <= 0){
@@ -44,7 +46,7 @@ export const AuctionCard = ({ items, UpdateById, UpdateByIdInventario }) => {
         const obj = el
 
         obj.takenByCustomer = true
-        el.historiSale = dueDate
+        obj.historiSale = dueDate
         obj.notaDeVenta = noteState
 
         UpdateById(id, obj)
@@ -52,15 +54,45 @@ export const AuctionCard = ({ items, UpdateById, UpdateByIdInventario }) => {
         setToggle(!toggle)
 
 
+
         //=====//================ Inventario  // 
 
         obj.items.map((el,i)=>{
 
-                el.stockHermosillo = el?.stockHermosillo - el.quantity
-                UpdateByIdInventario(el.id, el)
+               const a = itemsInventario.filter(ele => ele.id === el.id )[i]
+
+
+                if (a.historiSales === undefined) {
+
+                        a.historiSales = [];
+                        a.historiSales.push(dueDate);
+
+                        a.notaDeVenta = []
+                        a.notaDeVenta.push(noteState)
+
+                        a.stockHermosillo = a?.stockHermosillo - el.quantity
+
+                        UpdateByIdInventario(a.id, a)
+
+                } else {
+
+                        a.historiSales.push(dueDate);
+                        a.notaDeVenta.push(noteState)
+
+                        a.stockHermosillo = a?.stockHermosillo - el.quantity
+
+                        UpdateByIdInventario(el.id, a)
+
+                }
+   
             
         })
+
+
+
+
     }
+
 
 
 
