@@ -26,6 +26,15 @@ export const AuctionCard = ({ items, UpdateById, UpdateByIdInventario }) => {
 
     const[noteState, setNoteState]=useState('')
 
+    const[tallaState, setTallaState]=useState({})
+
+    console.log(tallaState)
+
+    const handleTallaState=(e)=>{
+      let str = e.target.value
+      let talla = str.split(',')
+      setTallaState({...tallaState, [e.target.name] : talla})
+    }
 
 
     let currentDate = new Date();
@@ -106,7 +115,7 @@ export const AuctionCard = ({ items, UpdateById, UpdateByIdInventario }) => {
 
 
 
-
+//className={el.takenByCustomer ? '' : 'd-none'} 
 
      return (
         <div className='card p-4'>
@@ -136,9 +145,16 @@ export const AuctionCard = ({ items, UpdateById, UpdateByIdInventario }) => {
                                 <b key={i}> 
                                     <img style={{width:'100px'}} src={el.imgUrl}/><br />
                                     Cantidad: { el.quantity}, <br /> 
-                                    Tallas: {el.talla.map((elee, i)=>(<span> {elee},</span>))} <br /><br />
+                                    Tallas: {el.talla.map((elee, i)=>(<span key={i+'elee'}> {elee},</span>))} <br />
+
+                                    <input 
+                                            type="text" min='0' placeholder='Talla Escogida' 
+                                            name={el.id}
+                                            onChange={(e)=>handleTallaState(e)}/><br /><br /><br />
                                 </b>
                             ))}
+
+
 
 
                            
@@ -173,6 +189,8 @@ export const AuctionCard = ({ items, UpdateById, UpdateByIdInventario }) => {
                                             <input className='my-3' type="number" min='0' placeholder='# Nota de Venta' value={noteState} onChange={(e)=>setNoteState(e.target.value)}/>
                                     </>
                             }
+
+                           
 
                             <br/>
 
