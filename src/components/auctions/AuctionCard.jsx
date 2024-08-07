@@ -123,11 +123,7 @@ export const AuctionCard = ({ items, UpdateById, UpdateByIdInventario }) => {
                         <div className="texto">
                             <h3>Comprador: {el.buyer.name}</h3>
 
-                            {el.items.map((el, i) => (
-                                <b key={i}>Producto ID: {el.id} - Cantidad: { el.quantity} <br /><br /></b>
-                            ))}
-
-                            <p>
+                             <p>
                                 Fecha de Compra:{" "}
                                 {new Date(el.date).toLocaleDateString("es-ES", {
                                     year: "numeric",
@@ -135,6 +131,17 @@ export const AuctionCard = ({ items, UpdateById, UpdateByIdInventario }) => {
                                     day: "numeric",
                                 })}
                             </p>
+
+                            {el.items.map((el, i) => (
+                                <b key={i}> 
+                                    <img style={{width:'100px'}} src={el.imgUrl}/><br />
+                                    Cantidad: { el.quantity}, <br /> 
+                                    Tallas: {el.talla.map((elee, i)=>(<span> {elee},</span>))} <br /><br />
+                                </b>
+                            ))}
+
+
+                           
 
                             <p>Correo: {el.buyer.email}</p>
                             <p>Celular: {el.buyer.phone}</p>
@@ -146,6 +153,8 @@ export const AuctionCard = ({ items, UpdateById, UpdateByIdInventario }) => {
                             <p className='m-0'>Total: {el.total}</p>
                             
                             <br/>
+
+                           
 
                             {
                                 el.takenByCustomer === true &&
