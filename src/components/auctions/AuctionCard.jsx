@@ -204,8 +204,8 @@ export const AuctionCard = ({ items, UpdateById, UpdateByIdInventario }) => {
                                     Tallas: {ele.talla.map((el, i)=>(<b key={i+'talla'}>{el}, {''}</b>))} <br />
 
 
-                                    <input 
-                                            type="text" min='0' placeholder='Talla Escogida' 
+                                    <input className={el.takenByCustomer === true ? 'd-none' : 'c-r'}
+                                            type="text" placeholder='Talla Escogida' 
                                             name={ele.id} value={tallaState[ele.id]}
                                             onChange={(e)=>handleTallaState(e)}/><br /><br /><br />
                                 </b>
@@ -243,7 +243,7 @@ export const AuctionCard = ({ items, UpdateById, UpdateByIdInventario }) => {
                                 el.takenByCustomer === false &&
                                     <>
                                             <p className='m-0'>Status: <b>{el.takenByCustomer ? 'Entregado' : 'Pendiente'}</b></p>
-                                            <input className='my-3' type="number" min='0' placeholder='# Nota de Venta' value={noteState} onChange={(e)=>setNoteState(e.target.value)}/>
+                                            <input className='my-3 c-r' type="number" min='0' placeholder='# Nota de Venta' value={noteState} onChange={(e)=>setNoteState(e.target.value)}/>
                                     </>
                             }
 
