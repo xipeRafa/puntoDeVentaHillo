@@ -22,3 +22,7 @@ p span{
 .d-none{
   display: none;
 }
+
+.d{
+  color:red;
+}

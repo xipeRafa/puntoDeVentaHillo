@@ -21,7 +21,15 @@ export const AuctionCard = ({ items, UpdateById, UpdateByIdInventario }) => {
 
 
 
+
+
+
+
+
     const { deleteById, setToggle, toggle, toggleOrders, setToggleOrders, itemsInventario } = useContext(FireStoreDataContext);
+
+
+
 
 
     const[noteState, setNoteState]=useState('')
@@ -31,10 +39,20 @@ export const AuctionCard = ({ items, UpdateById, UpdateByIdInventario }) => {
     console.log(tallaState)
 
     const handleTallaState=(e)=>{
-      let str = e.target.value
-      let talla = str.split(',')
-      setTallaState({...tallaState, [e.target.name] : talla})
+        let str = e.target.value
+        let talla = str.split(',')
+
+        if(e.target.value.length>2){
+            //console.log('return', e.target.value.length)
+            return
+        }
+        setTallaState({...tallaState, [e.target.name] : talla})
     }
+
+
+
+
+
 
 
     let currentDate = new Date();
@@ -47,54 +65,90 @@ export const AuctionCard = ({ items, UpdateById, UpdateByIdInventario }) => {
 
     const handleToggle =(id, el)=>{
 
-        if(noteState.length <= 0){
-                alert('Falta el Numero Nota de Venta')
-                return
-        }
+         if(noteState.length <= 0){
+                 alert('Falta el Numero Nota de Venta')
+                 return
+         }
 
-        const obj = el
+         const obj = el
 
-        obj.takenByCustomer = true
-        obj.historiSale = dueDate
-        obj.notaDeVenta = noteState
+         obj.takenByCustomer = true
+         obj.historiSale = dueDate
+         obj.notaDeVenta = noteState
 
-        UpdateById(id, obj)
+         UpdateById(id, obj)
 
-        setToggle(!toggle)
+         setToggle(!toggle)
 
 
 
         //=====//================ Inventario  // 
 
-        obj.items.map((el,i)=>{
+         obj.items.map((el,i)=>{
 
-               const a = itemsInventario.filter(ele => ele.id === el.id )[i]
+                const a = itemsInventario.filter(ele => ele.id === el.id )[i]
 
 
-                if (a.historiSales === undefined) {
+                 if (a.historiSales === undefined) {
 
-                        a.historiSales = [];
-                        a.historiSales.push(dueDate);
+                         a.historiSales = [];
+                         a.historiSales.push(dueDate);
 
-                        a.notaDeVenta = []
-                        a.notaDeVenta.push(noteState)
+                         a.notaDeVenta = []
+                         a.notaDeVenta.push(noteState)
 
-                        a.stockHermosillo = a?.stockHermosillo - el.quantity
+                         a.stockHermosillo = a?.stockHermosillo - el.quantity
 
-                        UpdateByIdInventario(a.id, a)
+                         UpdateByIdInventario(a.id, a)
 
-                } else {
+                 } else {
 
-                        a.historiSales.push(dueDate);
-                        a.notaDeVenta.push(noteState)
+                         a.historiSales.push(dueDate);
+                         a.notaDeVenta.push(noteState)
 
-                        a.stockHermosillo = a?.stockHermosillo - el.quantity
+                         a.stockHermosillo = a?.stockHermosillo - el.quantity
 
-                        UpdateByIdInventario(el.id, a)
+                         UpdateByIdInventario(el.id, a)
 
-                }
+                 }
    
             
+         })
+
+
+
+
+
+
+        obj.items.map((el,i)=>{
+
+            const aa = itemsInventario.filter(ele => ele.id === el.id)[0]
+
+            console.log(Object.entries(tallaState))
+
+
+            for (let ind = 0; ind < Object.keys(tallaState).length ; ind++) {
+
+                    let everyValueArr = tallaState[Object.keys(tallaState)[ind]] // de la primer llave te da el primer valor y de la segunda llave te da el segundo objeto
+
+
+                    for (let i = 0; i < everyValueArr.length ; i++) {
+                            let b = aa.talla.filter(el => el !== everyValueArr[i])
+                            aa.talla = b
+
+                            console.log(aa)
+
+                            //console.log(Object.keys(tallaState)[ind], aa)
+                            UpdateByIdInventario(Object.keys(tallaState)[ind], aa)
+       
+                    }   
+                   
+
+            }
+            
+                setToggle(!toggle)
+            //console.log(Object.values(tallaState).flat())
+
         })
 
 
@@ -130,6 +184,7 @@ export const AuctionCard = ({ items, UpdateById, UpdateByIdInventario }) => {
                         <hr />
 
                         <div className="texto">
+
                             <h3>Comprador: {el.buyer.name}</h3>
 
                              <p>
@@ -141,15 +196,17 @@ export const AuctionCard = ({ items, UpdateById, UpdateByIdInventario }) => {
                                 })}
                             </p>
 
-                            {el.items.map((el, i) => (
+                            {el.items.map((ele, i) => (
                                 <b key={i}> 
-                                    <img style={{width:'100px'}} src={el.imgUrl}/><br />
-                                    Cantidad: { el.quantity}, <br /> 
-                                    Tallas: {el.talla.map((elee, i)=>(<span key={i+'elee'}> {elee},</span>))} <br />
+                                <h6>id {ele.id}</h6>
+                                    <img style={{width:'100px'}} src={ele.imgUrl}/><br />
+                                    Cantidad: { ele.quantity}, <br /> 
+                                    Tallas: {ele.talla.map((el, i)=>(<b key={i+'talla'}>{el}, {''}</b>))} <br />
+
 
                                     <input 
                                             type="text" min='0' placeholder='Talla Escogida' 
-                                            name={el.id}
+                                            name={ele.id} value={tallaState[ele.id]}
                                             onChange={(e)=>handleTallaState(e)}/><br /><br /><br />
                                 </b>
                             ))}
