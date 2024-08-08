@@ -124,8 +124,6 @@ export const AuctionCard = ({ items, UpdateById, UpdateByIdInventario }) => {
 
             const aa = itemsInventario.filter(ele => ele.id === el.id)[0]
 
-            console.log(Object.entries(tallaState))
-
 
             for (let ind = 0; ind < Object.keys(tallaState).length ; ind++) {
 
@@ -136,9 +134,6 @@ export const AuctionCard = ({ items, UpdateById, UpdateByIdInventario }) => {
                             let b = aa.talla.filter(el => el !== everyValueArr[i])
                             aa.talla = b
 
-                            console.log(aa)
-
-                            //console.log(Object.keys(tallaState)[ind], aa)
                             UpdateByIdInventario(Object.keys(tallaState)[ind], aa)
        
                     }   
@@ -169,7 +164,7 @@ export const AuctionCard = ({ items, UpdateById, UpdateByIdInventario }) => {
 
 
 
-//className={el.takenByCustomer ? '' : 'd-none'} 
+
 
      return (
         <div className='card p-4'>
@@ -199,9 +194,16 @@ export const AuctionCard = ({ items, UpdateById, UpdateByIdInventario }) => {
                             {el.items.map((ele, i) => (
                                 <b key={i}> 
                                 <h6>id {ele.id}</h6>
+
                                     <img style={{width:'100px'}} src={ele.imgUrl}/><br />
-                                    Cantidad: { ele.quantity}, <br /> 
-                                    Tallas: {ele.talla.map((el, i)=>(<b key={i+'talla'}>{el}, {''}</b>))} <br />
+
+                                    Cantidad: { ele.quantity} <br /> 
+
+                                    <span className={el.takenByCustomer === true && 'd-none'}> Tallas: </span>
+
+                                    {ele.talla.map((elem, i)=>(
+                                            <b key={i+'talla'} className={el.takenByCustomer === true && 'd-none'}>{elem}, {''}</b>
+                                    ))} <br />
 
 
                                     <input className={el.takenByCustomer === true ? 'd-none' : 'c-r'}
